@@ -1,0 +1,10 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: TorrentRequest
+metadata:
+  name: ubuntu-iso-search
+spec:
+  keywords: "ubuntu 22.04"
+  minSeeders: 10
+  indexers:
+    - extratorrent-st
+    - torrentdownload

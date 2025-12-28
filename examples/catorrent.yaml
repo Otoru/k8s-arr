@@ -1,0 +1,126 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: catorrent
+spec:
+  caps:
+    categorymappings:
+    - cat: PC/Games
+      desc: PC
+      id: PC
+    - cat: Console/Other
+      desc: Playstation 1
+      id: PS1
+    - cat: Console/Other
+      desc: Playstation 2
+      id: PS2
+    - cat: Console/PS3
+      desc: Playstation 3
+      id: PS3
+    - cat: Console/PS4
+      desc: Playstation 4
+      id: PS4
+    - cat: Console/Other
+      desc: Playstation 5
+      id: PS5
+    - cat: Console/Other
+      desc: Nintendo Switch
+      id: SWITCH
+    - cat: Console/PSP
+      desc: Playstation (portable) PSP
+      id: PSP
+    - cat: Console/PS Vita
+      desc: Playstation Vita
+      id: PSVITA
+    - cat: Console/XBox One
+      desc: Xbox ONE
+      id: XONE
+    - cat: Console/XBox 360
+      desc: Xbox 360
+      id: X360
+    - cat: Console/WiiU
+      desc: Nintendo WIIU
+      id: WIIU
+    - cat: Console/Wii
+      desc: Nintendo WII
+      id: WII
+    - cat: Console/3DS
+      desc: Nintendo 3DS
+      id: 3DS
+    - cat: Console/NDS
+      desc: Nintendo DS
+      id: NDS
+    - cat: Console/Other
+      desc: Nintendo 64
+      id: N64
+    - cat: Console/Other
+      desc: Nintendo Game Cube
+      id: NGC
+    - cat: Console/Other
+      desc: Dreamcast
+      id: DREAMCAST
+    - cat: Console/Other
+      desc: Sega Saturn
+      id: SAT
+    modes:
+      search:
+      - q
+  description: Catorrent is a RUSSIAN Public Torrent Tracker for GAMES
+  download:
+    selectors:
+    - attribute: href
+      selector: a[href*="/index.php?do=download&id="]
+  encoding: UTF-8
+  id: catorrent
+  language: ru-RU
+  legacylinks:
+  - https://catorrent.org/
+  links:
+  - https://catorrent.net/
+  name: Catorrent
+  search:
+    fields:
+      category:
+        default: PS1
+        optional: true
+        selector: div.icon_default
+      date:
+        text: now
+      description:
+        text: '{{ .Result.genre }}'
+      details:
+        attribute: href
+        selector: a[href$=".html"]
+      download:
+        attribute: href
+        selector: a[href$=".html"]
+      downloadvolumefactor:
+        text: "0"
+      genre:
+        selector: div.short_game_genre
+      leechers:
+        text: "1"
+      poster:
+        attribute: src
+        selector: img
+      seeders:
+        text: "1"
+      size:
+        text: 512 MB
+      title:
+        selector: div.short_game_title
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      do: search
+      result_from: "1"
+      search_start: "0"
+      story: '{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}'
+      subaction: search
+    paths:
+    - path: index.php
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: div.short_game_search
+  type: public

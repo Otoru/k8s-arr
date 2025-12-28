@@ -1,0 +1,58 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: magnetz
+spec:
+  caps:
+    categorymappings:
+    - cat: Other
+      desc: Other
+      id: Other
+    modes:
+      search:
+      - q
+  description: Magnetz is a Public torrent meta-search engine
+  download:
+    selectors:
+    - attribute: href
+      selector: a[href^="magnet:?xt="]
+  encoding: UTF-8
+  id: magnetz
+  language: en-US
+  links:
+  - https://magnetz.eu/
+  name: Magnetz
+  search:
+    fields:
+      category:
+        text: Other
+      date:
+        text: now
+      details:
+        attribute: href
+        selector: a
+      download:
+        attribute: href
+        selector: a
+      downloadvolumefactor:
+        text: "0"
+      seeders:
+        text: "1"
+      size:
+        selector: small
+      title:
+        selector: h5
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      query: '{{ if .Keywords }}{{ .Keywords }}{{ else }}*{{ end }}'
+    paths:
+    - path: search
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: a.list-group-item
+  settings:
+  - name: info_category_8000
+    type: info_category_8000
+  type: public

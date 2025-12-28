@@ -1,0 +1,77 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: vstorrent
+spec:
+  caps:
+    categories:
+      PC: PC
+    modes:
+      search:
+      - q
+  description: VSTorrent is a Public site for AUDIO apps, plugins and samples
+  download:
+    selectors:
+    - attribute: href
+      selector: a[href^="magnet:?xt"]
+  encoding: UTF-8
+  id: vstorrent
+  language: en-US
+  links:
+  - https://vstorrent.org/
+  name: VSTorrent
+  search:
+    fields:
+      category:
+        text: PC
+      date:
+        selector: span.date
+      description:
+        selector: .entry-summary
+      details:
+        attribute: href
+        selector: .entry-title > a
+      download:
+        attribute: href
+        selector: .entry-title > a
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        text: "1"
+      seeders:
+        text: "1"
+      size:
+        text: 512 MB
+      title:
+        selector: .entry-title
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      order: '{{ .Config.type }}'
+      orderby: '{{ .Config.sort }}'
+      post_type: post
+      s: '{{ .Keywords }}'
+    paths:
+    - path: /
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: article:has(a)
+  settings:
+  - default: date
+    label: Sort requested from site
+    name: sort
+    options:
+      date: created
+      relevance: relevance
+    type: select
+  - default: DESC
+    label: Order requested from site
+    name: type
+    options:
+      ASC: asc
+      DESC: desc
+    type: select
+  type: public

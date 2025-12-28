@@ -1,0 +1,146 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: nekobt
+spec:
+  caps:
+    categorymappings:
+    - cat: TV/Anime
+      desc: Anime
+      id: "5070"
+    - cat: Movies/Other
+      desc: Movies
+      id: "2000"
+    modes:
+      search:
+      - q
+  description: nekoBT is a Public Torrent Tracker for ANIME
+  encoding: UTF-8
+  id: nekobt
+  language: en-US
+  links:
+  - https://nekobt.to/
+  name: nekoBT
+  search:
+    fields:
+      category:
+        attribute: value
+        selector: '[name="category"]'
+      date:
+        selector: pubDate
+      description:
+        filters:
+        - args:
+          - .+ {(Tags:.+?)}
+          - $1
+          name: re_replace
+        selector: title
+      details:
+        selector: comments
+      downloadvolumefactor:
+        text: "0"
+      grabs:
+        attribute: value
+        selector: '[name="grabs"]'
+      leechers:
+        attribute: value
+        selector: '[name="leechers"]'
+      magnet:
+        attribute: url
+        selector: enclosure
+      seeders:
+        attribute: value
+        selector: '[name="seeders"]'
+      size:
+        selector: size
+      title:
+        filters:
+        - args:
+          - (.+?) {Tags:.+
+          - $1
+          name: re_replace
+        selector: title
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      apikey: '{{ .Config.apikey }}'
+      audio_lang: '{{ .Config.audio_lang }}'
+      ep: '{{ .Query.Ep }}'
+      fansub_lang: '{{ .Config.fansub_lang }}'
+      group_id: '{{ .Config.group_id }}'
+      hardsub: '{{ re_replace .Config.hardsub "_" "" }}'
+      levels: '{{ re_replace .Config.levels "_" "" }}'
+      limit: "100"
+      mtl: '{{ re_replace .Config.mtl "_" "" }}'
+      otl: '{{ re_replace .Config.otl "_" "" }}'
+      q: '{{ .Keywords }}'
+      season: '{{ .Query.Season }}'
+      sub_lang: '{{ .Config.sub_lang }}'
+      t: '{{ .Query.Type }}'
+      tvdbid: '{{ .Query.TVDBID }}'
+    paths:
+    - path: api/torznab/api
+      response:
+        type: xml
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: rss > channel > item
+  settings:
+  - label: API Key (Optional)
+    name: apikey
+    type: text
+  - default: API key is optional. You can find or generate a new API Key by accessing
+      your <a href="https://nekobt.to/" target="_blank">nekoBT</a> account settings
+      page if needed.
+    label: About your API key
+    name: info_key
+    type: info
+  - default: _
+    label: Subtitle Level
+    name: levels
+    options:
+      _: All
+      "0": Level 0
+      "1": Level 1
+      "2": Level 2
+      "3": Level 3
+      "4": Level 4
+    type: select
+  - label: Audio Language (comma-separated codes, e.g. en,ja)
+    name: audio_lang
+    type: text
+  - label: Fansub Language (comma-separated codes, e.g. en,ja)
+    name: fansub_lang
+    type: text
+  - label: Subtitle Language (comma-separated codes, e.g. en,ja)
+    name: sub_lang
+    type: text
+  - default: _
+    label: Hardcoded Subtitles
+    name: hardsub
+    options:
+      _: No Filter
+      "false": Exclude
+      "true": Include Only
+    type: select
+  - default: _
+    label: OTL Subtitles
+    name: otl
+    options:
+      _: No Filter
+      "false": Exclude
+      "true": Include Only
+    type: select
+  - default: _
+    label: MTL Subtitles
+    name: mtl
+    options:
+      _: No Filter
+      "false": Exclude
+      "true": Include Only
+    type: select
+  - label: Group ID
+    name: group_id
+    type: text
+  type: public

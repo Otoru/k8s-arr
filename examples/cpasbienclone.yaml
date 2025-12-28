@@ -1,0 +1,147 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: cpasbien-clone
+spec:
+  caps:
+    allowrawsearch: true
+    categories:
+      Other: Other
+    modes:
+      search:
+      - q
+  description: cpasbien clone is a FRENCH Public site for MOVIES / TV / GENERAL
+  download:
+    before:
+      path: download_magnet?id={{ re_replace .DownloadUri.AbsoluteUri "^.*-(\d+)\.html"
+        "$1" }}
+    selectors:
+    - selector: body
+  encoding: UTF-8
+  followredirect: true
+  id: cpasbienclone
+  language: fr-FR
+  legacylinks:
+  - https://www1.cpasbiens.ws/
+  - https://www2.cpasbiens.ws/
+  - https://cpasbiens.cm/
+  - https://www1.cpasbiens.cm/
+  - https://wwv.cpasbien.to/
+  - https://cpasbiens.black-mirror.xyz/
+  - https://cpasbiens.unblocked.casa/
+  - https://cpasbiens.proxyportal.fun/
+  - https://cpasbiens.uk-unblock.xyz/
+  - https://cpasbiens.ind-unblock.xyz/
+  - https://www.cpasbien.gg/
+  - https://www.cpasbien.vip/
+  - https://cpasbien.to/
+  - https://www.cpasbien.tw/
+  - https://www.cpasbien.love/
+  links:
+  - https://www1.cpasbien.to/
+  name: cpasbien clone
+  search:
+    fields:
+      category:
+        text: Other
+      date:
+        text: now
+      details:
+        attribute: href
+        selector: a
+      download:
+        attribute: href
+        selector: a
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        default: "0"
+        optional: true
+        selector: div.down
+      seeders:
+        default: "0"
+        optional: true
+        selector: div.up
+      size:
+        filters:
+        - args:
+          - (\w)o
+          - $1B
+          name: re_replace
+        - args:
+          - (\d+\.\d)$
+          - $1MB
+          name: re_replace
+        selector: div.poid
+      title:
+        text: '{{ if .Config.multilang }}{{ .Result.title_multilang }}{{ else }}{{
+          .Result.title_phase2 }}{{ end }}'
+      title_multilang:
+        filters:
+        - args:
+          - (?i)\b(MULTI(?!.*(?:FRENCH|ENGLISH|VOSTFR)))\b
+          - '{{ .Config.multilanguage }}'
+          name: re_replace
+        text: '{{ .Result.title_phase2 }}'
+      title_phase1:
+        filters:
+        - args:
+          - (?i)\b(FRENCH|MULTI|TRUEFRENCH|VOSTFR|SUBFRENCH)\b(.+?)(\b((19|20)\d{2})\b)$
+          - $3 $1$2
+          name: re_replace
+        selector: a
+      title_phase2:
+        text: '{{ if .Config.vostfr }}{{ .Result.title_vostfr }}{{ else }}{{ .Result.title_phase1
+          }}{{ end }}'
+      title_vostfr:
+        filters:
+        - args:
+          - (?i)\b(vostfr|subfrench)\b
+          - ENGLISH
+          name: re_replace
+        text: '{{ .Result.title_phase1 }}'
+      uploadvolumefactor:
+        text: "1"
+    paths:
+    - path: '{{ if .Keywords }}search_torrent/{{ .Keywords }}.html,{{ .Config.sort
+        }}{{ else }}home/{{ end }}'
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: table.table-corps > tbody > tr:has(a)
+  settings:
+  - name: info_category_8000
+    type: info_category_8000
+  - default: "false"
+    label: Replace MULTi by another language in release name
+    name: multilang
+    type: checkbox
+  - default: FRENCH
+    label: Replace MULTi by this language
+    name: multilanguage
+    options:
+      ENGLISH: ENGLISH
+      FRENCH: FRENCH
+      MULTi ENGLISH: MULTi ENGLISH
+      MULTi FRENCH: MULTi FRENCH
+      MULTi VOSTFR: MULTi VOSTFR
+      VOSTFR: VOSTFR
+    type: select
+  - default: "false"
+    label: Replace VOSTFR and SUBFRENCH with ENGLISH
+    name: vostfr
+    type: checkbox
+  - default: trie-date-d
+    label: Sort requested from site (Works only for searches with Keywords)
+    name: sort
+    options:
+      trie-date-a: created asc
+      trie-date-d: created desc
+      trie-nom-a: title asc
+      trie-nom-d: title desc
+      trie-poid-a: size asc
+      trie-poid-d: size desc
+      trie-seeds-a: seeders asc
+      trie-seeds-d: seeders desc
+    type: select
+  type: public

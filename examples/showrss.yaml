@@ -1,0 +1,59 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: showrss
+spec:
+  caps:
+    categorymappings:
+    - cat: TV/SD
+      id: "1"
+    - cat: TV/HD
+      id: "2"
+    modes:
+      search:
+      - q
+  description: showRSS is a service that allows you to keep track of your favorite
+    TV shows
+  encoding: UTF-8
+  id: showrss-yml
+  language: en-US
+  links:
+  - https://showrss.info/
+  name: showRSS
+  search:
+    fields:
+      category:
+        case:
+          '*': "1"
+          :contains("720p"): "2"
+          :contains("1080p"): "2"
+        selector: raw_title
+      date:
+        selector: pubDate
+      details:
+        text: /
+      download:
+        selector: link
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        text: "1"
+      seeders:
+        text: "1"
+      size:
+        text: 512 MB
+      title:
+        selector: raw_title
+      uploadvolumefactor:
+        text: "1"
+    paths:
+    - path: /other/all.rss
+      response:
+        type: xml
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: rss > channel > item
+  type: public

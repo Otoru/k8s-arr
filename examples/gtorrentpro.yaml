@@ -1,0 +1,92 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: gtorrent-club
+spec:
+  caps:
+    categorymappings:
+    - cat: Movies
+      desc: Фильмы (Movies)
+      id: filmy
+    - cat: Audio
+      desc: Музыка (Music)
+      id: muzyka
+    - cat: Console
+      desc: Игры (Games)
+      id: igry
+    - cat: TV
+      desc: Сериалы (TV series)
+      id: serialy
+    - cat: PC
+      desc: Программы (Software)
+      id: programmy
+    - cat: Other
+      desc: prilozheniya (Other)
+      id: prilozheniya
+    modes:
+      search:
+      - q
+  description: GTorrent.club is a RUSSIAN Public Torrent Tracker for MOVIES / TV /
+    GENERAL
+  download:
+    selectors:
+    - attribute: href
+      selector: a[href^="/engine/download.php?id="]
+  encoding: windows-1251
+  id: gtorrentpro
+  language: ru-RU
+  legacylinks:
+  - http://gtorrent.pro/
+  - http://gtorrent.ru/
+  links:
+  - https://gtorrent.club/
+  name: GTorrent.club
+  search:
+    fields:
+      category:
+        attribute: href
+        filters:
+        - args:
+          - /
+          - "3"
+          name: split
+        selector: div.name a
+      date:
+        text: now
+      details:
+        attribute: href
+        selector: div.name a
+      download:
+        attribute: href
+        selector: div.name a
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        selector: div.download
+      seeders:
+        selector: div.uploaded
+      size:
+        selector: div:nth-child(2)
+      title:
+        selector: div.name
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      do: search
+      full_search: "0"
+      result_from: "1"
+      search_start: "0"
+      story: '{{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}'
+      subaction: search
+    paths:
+    - path: index.php
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: div.blog_brief_news:not(div.first_line):not(:has(div.uploaded:empty))
+  settings:
+  - name: info_flaresolverr
+    type: info_flaresolverr
+  type: public

@@ -1,0 +1,113 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: torrentgalaxyclone
+spec:
+  caps:
+    categorymappings:
+    - cat: TV/Anime
+      desc: Anime
+      id: Anime
+    - cat: PC
+      desc: Apps
+      id: Apps
+    - cat: Books
+      desc: Books
+      id: Books
+    - cat: TV/Documentary
+      desc: Documentaries
+      id: Docus
+    - cat: Console
+      desc: Games
+      id: Games
+    - cat: Movies
+      desc: Movies
+      id: Movies
+    - cat: Audio
+      desc: Music
+      id: Music
+    - cat: Other
+      desc: Other
+      id: Other
+    - cat: TV
+      desc: TV
+      id: TV
+    - cat: XXX
+      desc: XXX
+      id: XXX
+    - cat: TV/Documentary
+      desc: Docus
+      id: Documentaries
+    - cat: Books
+      desc: E-books
+      id: E-books
+    modes:
+      search:
+      - q
+  description: TorrentGalaxyClone is a Public site for MOVIES / TV / GENERAL
+  download:
+    selectors:
+    - attribute: href
+      selector: a[href^="magnet:?xt="]
+  encoding: UTF-8
+  id: torrentgalaxyclone
+  language: en-US
+  links:
+  - https://torrentgalaxy.one/
+  - https://torrentgalaxy.info/
+  - https://torrentgalaxy.space/
+  name: TorrentGalaxyClone
+  search:
+    fields:
+      _username:
+        selector: a.username
+      category:
+        selector: a[href^="/get-posts/category:"]
+      date:
+        filters:
+        - name: timeago
+        remove: div.bighide
+        selector: div.tgxtablecell:nth-last-child(1)
+      description:
+        text: 'Uploader: {{ .Result._username }}'
+      details:
+        attribute: href
+        selector: a[href^="/post-detail/"]
+      download:
+        attribute: href
+        selector: a[href^="/post-detail/"]
+      downloadvolumefactor:
+        text: "0"
+      imdbid:
+        attribute: href
+        selector: a[href^="/get-posts/keywords:tt"]
+      leechers:
+        selector: div.tgxtablecell:nth-last-child(2) span font:nth-of-type(2)
+      seeders:
+        selector: div.tgxtablecell:nth-last-child(2) span font
+      size:
+        selector: div.tgxtablecell:nth-last-child(5)
+      title:
+        attribute: title
+        selector: a[href^="/post-detail/"]
+      uploadvolumefactor:
+        text: "1"
+    paths:
+    - path: get-posts/{{ if or .Query.IMDBID .Keywords }}keywords:{{ or .Query.IMDBID
+        .Keywords }}{{ else }}{{ end }}{{ range .Categories }}:category:{{.}}{{end}}
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: div.tgxtablerow{{ if .Config.uploader }}:has(a.username:contains({{
+        .Config.uploader }})){{ else }}{{ end }}
+  settings:
+  - label: Filter by Uploader
+    name: uploader
+    type: text
+  - default: 'You can filter by Uploader by entering a Case Sensitive username, or
+      leave empty to get all results.<br>Note: this is the username of the Uploader
+      and not the Groupname that often show up at the end of TGx titles, eg RMTeam.'
+    label: About filtering by Uploader
+    name: info_uploader
+    type: info
+  type: public

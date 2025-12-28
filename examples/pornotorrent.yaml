@@ -1,0 +1,68 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: pornotorrent
+spec:
+  caps:
+    categorymappings:
+    - cat: XXX
+      desc: XXX
+      id: XXX
+    modes:
+      search:
+      - q
+  description: PornoTorrent is a SPANISH Public Torrent Tracker for 3X
+  download:
+    selectors:
+    - attribute: href
+      filters:
+      - args:
+        - ////
+        - //
+        name: replace
+      selector: a.button_link
+  encoding: UTF-8
+  id: pornotorrent
+  language: en-US
+  links:
+  - https://www.pornotorrent.eu/
+  name: PornoTorrent
+  search:
+    fields:
+      category:
+        text: XXX
+      date:
+        text: now
+      details:
+        attribute: href
+        selector: a
+      download:
+        attribute: href
+        selector: a
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        text: "1"
+      poster:
+        attribute: data-lazy-src
+        selector: img
+      seeders:
+        text: "1"
+      size:
+        text: 512 MB
+      title:
+        attribute: title
+        selector: a
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      s: '{{ .Keywords }}'
+    paths:
+    - path: /
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: ul.lista-filmes > li
+  type: public

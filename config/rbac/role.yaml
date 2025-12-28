@@ -1,0 +1,35 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - torrents.vitoru.fun
+  resources:
+  - indexers
+  - torrentrequests
+  - torrents
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - torrents.vitoru.fun
+  resources:
+  - indexers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - torrents.vitoru.fun
+  resources:
+  - indexers/status
+  - torrentrequests/status
+  verbs:
+  - get
+  - patch
+  - update

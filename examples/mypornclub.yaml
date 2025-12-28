@@ -1,0 +1,78 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: mypornclub
+spec:
+  caps:
+    categorymappings:
+    - cat: XXX
+      desc: XXX
+      id: XXX
+    modes:
+      search:
+      - q
+  description: MyPornClub is a Public Torrent Tracker for 3X
+  download:
+    selectors:
+    - attribute: href
+      filters:
+      - args:
+        - \s+
+        - ' '
+        name: re_replace
+      selector: a[href^="magnet:?xt="]
+  encoding: UTF-8
+  id: mypornclub
+  language: en-US
+  links:
+  - https://myporn.club/
+  name: MyPornClub
+  search:
+    fields:
+      category:
+        text: XXX
+      date:
+        filters:
+        - args:
+          - Last year
+          - 1 year ago
+          name: replace
+        - args:
+          - Last month
+          - 1 month ago
+          name: replace
+        selector: div.torrent_element_info span:nth-child(2)
+      details:
+        attribute: href
+        selector: a[href^="/t/"]
+      download:
+        attribute: href
+        selector: a[href^="/t/"]
+      downloadvolumefactor:
+        text: "0"
+      grabs:
+        selector: div.torrent_element_info span:nth-child(8)
+      leechers:
+        selector: div.torrent_element_info span:nth-child(12)
+      seeders:
+        selector: div.torrent_element_info span:nth-child(10)
+      size:
+        selector: div.torrent_element_info span:nth-child(4)
+      title:
+        remove: i
+        selector: a[href^="/t/"]
+      uploadvolumefactor:
+        text: "1"
+    paths:
+    - path: '{{ if .Keywords }}s/{{ re_replace .Keywords "\s+" "-" }}{{ else }}ts{{
+        end }}'
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: div.torrents_list > div.torrent_element
+  settings:
+  - name: info_flaresolverr
+    type: info_flaresolverr
+  type: public

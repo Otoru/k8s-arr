@@ -1,0 +1,85 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: sexy-pics
+spec:
+  caps:
+    categories:
+      XXX: XXX
+    modes:
+      search:
+      - q
+  description: Sexy-Pics is a Public Magnet Links site for 3X MP4
+  encoding: UTF-8
+  followredirect: true
+  id: sexypics
+  language: en-US
+  links:
+  - https://www.sexy-pics.us/
+  name: Sexy-Pics
+  search:
+    fields:
+      category:
+        text: XXX
+      date:
+        filters:
+        - name: timeago
+        selector: td:nth-child(3)
+      details:
+        attribute: href
+        selector: td.n a
+      downloadvolumefactor:
+        text: "0"
+      files:
+        selector: td:nth-child(5)
+      leechers:
+        selector: td.l
+      magnet:
+        attribute: href
+        selector: td.m a
+      seeders:
+        selector: td.s
+      size:
+        selector: td:nth-child(6)
+      title:
+        attribute: title
+        selector: td.n a
+      uploadvolumefactor:
+        text: "1"
+    headers:
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+    keywordsfilters:
+    - args:
+      - ' '
+      - '-'
+      name: re_replace
+    - name: tolower
+    paths:
+    - path: '{{ if .Keywords }}{{ re_replace .Keywords "(.).*" "$1" }}/{{ .Keywords
+        }}/{{ else }}browse/all/{{ end }}{{ .Config.sort }}/{{ .Config.type }}/'
+    - path: '{{ if .Keywords }}{{ re_replace .Keywords "(.).*" "$1" }}/{{ .Keywords
+        }}/{{ else }}browse/all/{{ end }}{{ .Config.sort }}/{{ .Config.type }}/2/'
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: tr:has(td.m)
+  settings:
+  - default: age
+    label: Sort requested from site
+    name: sort
+    options:
+      age: created
+      se: seeders
+      size: size
+    type: select
+  - default: desc
+    label: Order requested from site
+    name: type
+    options:
+      asc: asc
+      desc: desc
+    type: select
+  - name: info_flaresolverr
+    type: info_flaresolverr
+  type: public

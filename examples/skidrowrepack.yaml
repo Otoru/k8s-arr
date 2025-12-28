@@ -1,0 +1,107 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: skidrowrepack
+spec:
+  caps:
+    categorymappings:
+    - cat: PC/Games
+      desc: Action
+      id: "9"
+    - cat: PC/Games
+      desc: Adventure
+      id: "10"
+    - cat: PC/Games
+      desc: Online Games
+      id: "21"
+    - cat: PC/Games
+      desc: Arcade
+      id: "11"
+    - cat: PC/Games
+      desc: Fighting
+      id: "12"
+    - cat: PC/Games
+      desc: Horror
+      id: "13"
+    - cat: PC/Games
+      desc: Logic, Puzzle
+      id: "14"
+    - cat: PC/Games
+      desc: Racing
+      id: "15"
+    - cat: PC/Games
+      desc: RPG
+      id: "16"
+    - cat: PC/Games
+      desc: Shooters
+      id: "17"
+    - cat: PC/Games
+      desc: Simulator
+      id: "18"
+    - cat: PC/Games
+      desc: Sports
+      id: "19"
+    - cat: PC/Games
+      desc: Strategy
+      id: "20"
+    modes:
+      search:
+      - q
+  description: SkidrowRepack is a Public Torrent Tracker for GAMES
+  download:
+    selectors:
+    - attribute: href
+      selector: a.dwn-load
+  encoding: UTF-8
+  id: skidrowrepack
+  language: en-US
+  links:
+  - https://skidrowrepack.com/
+  name: SkidrowRepack
+  search:
+    fields:
+      category:
+        text: "9"
+      date:
+        text: now
+      details:
+        attribute: href
+        selector: a.mov-t
+      download:
+        attribute: href
+        selector: a.mov-t
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        text: "1"
+      poster:
+        attribute: src
+        selector: img
+      seeders:
+        text: "1"
+      size:
+        text: 4 GB
+      title:
+        selector: a.mov-t
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      $raw: '{{ range .Categories }}catlist[]={{.}}&{{end}}'
+      do: search
+      full_search: "1"
+      resorder: desc
+      result_from: "1"
+      search_start: "0"
+      searchdate: "0"
+      showposts: "1"
+      sortby: date
+      story: '{{ if .Keywords }}{{ .Keywords }}{{ else }}game{{ end }}'
+      subaction: search
+      titleonly: '{{ if .Keywords }}3{{ else }}0{{ end }}'
+    paths:
+    - path: index.php
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: div.mov
+  type: public

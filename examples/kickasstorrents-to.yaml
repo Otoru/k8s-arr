@@ -1,0 +1,343 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: kickasstorrents-to
+spec:
+  caps:
+    categorymappings:
+    - cat: Movies/3D
+      desc: Movies 3D Movies
+      id: 3DMovies
+    - cat: XXX/WEB-DL
+      desc: Adult Video
+      id: Adult
+    - cat: XXX/Other
+      desc: Adult Games
+      id: AdultGames
+    - cat: XXX/Other
+      desc: Adult Hentai
+      id: AdultHentai
+    - cat: XXX/Other
+      desc: Adult Magazines
+      id: AdultMagazines
+    - cat: XXX/ImageSet
+      desc: Adult Pictures
+      id: AdultPictures
+    - cat: XXX/WEB-DL
+      desc: Adult Video
+      id: AdultVideo
+    - cat: PC/Mobile-Android
+      desc: Apps Android
+      id: Android
+    - cat: TV/Anime
+      desc: Anime
+      id: Anime
+    - cat: Audio/Lossless
+      desc: Anime Audio Lossless
+      id: AnimeAudioLossless
+    - cat: Audio/Lossless
+      desc: Anime Audio Lossless
+      id: AnimeAudio[Lossless]
+    - cat: Audio/MP3
+      desc: Anime Audio Lossy
+      id: AnimeAudio[Lossy]
+    - cat: TV/Anime
+      desc: Anime English-translated
+      id: AnimeEnglish-translated
+    - cat: TV/Anime
+      desc: Anime Live Action English-translated
+      id: AnimeLiveAction[English-translated]
+    - cat: TV/Anime
+      desc: Anime Live Action Non-English
+      id: AnimeLiveAction[Non-English]
+    - cat: TV/Anime
+      desc: Anime Live Action Raw
+      id: AnimeLiveAction[Raw]
+    - cat: Other
+      desc: Anime Pictures
+      id: AnimePictures
+    - cat: TV/Anime
+      desc: Anime Raw
+      id: AnimeRaw
+    - cat: TV/Anime
+      desc: Anime Subs
+      id: AnimeSubs
+    - cat: PC
+      desc: Apps
+      id: Apps
+    - cat: PC/Mobile-Android
+      desc: Apps Android
+      id: AppsAndroid
+    - cat: PC
+      desc: Apps Linux
+      id: AppsLinux
+    - cat: PC/Mac
+      desc: Apps Mac
+      id: AppsMac
+    - cat: PC/0day
+      desc: Apps Windows
+      id: AppsWindows
+    - cat: Audio/Audiobook
+      desc: Audio books
+      id: Audiobooks
+    - cat: Movies
+      desc: Movies Bollywood
+      id: Bollywood
+    - cat: Books
+      desc: Books
+      id: Books
+    - cat: Audio/Audiobook
+      desc: Audio books
+      id: BooksAudiobooks
+    - cat: Books/Comics
+      desc: Comics
+      id: BooksComics
+    - cat: Books/EBook
+      desc: Ebooks
+      id: BooksEbooks
+    - cat: Books/Comics
+      desc: Books Manga English-translated
+      id: BooksManga[English-translated]
+    - cat: Books/Comics
+      desc: Books Manga Raw
+      id: BooksManga[Raw]
+    - cat: Books/Comics
+      desc: Comics
+      id: Comics
+    - cat: Movies/DVD
+      desc: Movies DVD
+      id: DVD
+    - cat: Movies/Other
+      desc: Movies Documentary
+      id: Documentary
+    - cat: Movies
+      desc: Movies Dubbed
+      id: DubbedMovies
+    - cat: Books/EBook
+      desc: Ebooks
+      id: EBooks
+    - cat: TV/Anime
+      desc: Anime English-translated
+      id: English-translated
+    - cat: Console
+      desc: Games
+      id: Games
+    - cat: Console/NDS
+      desc: NDS
+      id: GamesNDS
+    - cat: PC/Games
+      desc: Games Other
+      id: GamesOtherGames
+    - cat: PC/Games
+      desc: Games PC
+      id: GamesPCGames
+    - cat: Console/PS3
+      desc: PS3
+      id: GamesPS3
+    - cat: Console/PS4
+      desc: PS4
+      id: GamesPS4
+    - cat: Console/PSP
+      desc: PSP
+      id: GamesPSP
+    - cat: Console/Wii
+      desc: Wii
+      id: GamesWii
+    - cat: Console/XBox 360
+      desc: Xbox360
+      id: GamesXbox360
+    - cat: Movies/HD
+      desc: Movies Highres
+      id: HighresMovies
+    - cat: PC
+      desc: Apps Linux
+      id: Linux
+    - cat: Audio/Lossless
+      desc: Music Lossless
+      id: Lossless
+    - cat: Audio/MP3
+      desc: Music MP3
+      id: MP3
+    - cat: Movies/HD
+      desc: Movies MP4
+      id: MP4
+    - cat: PC/Mac
+      desc: Apps Mac
+      id: Mac
+    - cat: Other
+      desc: Movie clips
+      id: Movieclips
+    - cat: Movies
+      desc: Movies
+      id: Movies
+    - cat: Movies/3D
+      desc: Movies 3D Movies
+      id: Movies3DMovies
+    - cat: Movies
+      desc: Movies Bollywood
+      id: MoviesBollywood
+    - cat: Movies/DVD
+      desc: Movies DVD
+      id: MoviesDVD
+    - cat: Movies/Other
+      desc: Movies Documentary
+      id: MoviesDocumentary
+    - cat: Movies
+      desc: Movies Dubbed
+      id: MoviesDubbedMovies
+    - cat: Movies/HD
+      desc: Movies Highres
+      id: MoviesHighresMovies
+    - cat: Movies/HD
+      desc: Movies MP4
+      id: MoviesMP4
+    - cat: Audio/Video
+      desc: Movies Music videos
+      id: MoviesMusicvideos
+    - cat: Other
+      desc: Movies Movie clips
+      id: MoviesMovieclips
+    - cat: Movies/Other
+      desc: Movies Other
+      id: MoviesOtherMovies
+    - cat: Movies/UHD
+      desc: Movies UltraHD
+      id: MoviesUltraHD
+    - cat: Audio
+      desc: Music
+      id: Music
+    - cat: Audio/Lossless
+      desc: Music Lossless
+      id: MusicLossless
+    - cat: Audio/MP3
+      desc: Music MP3
+      id: MusicMP3
+    - cat: Audio/Video
+      desc: Music videos
+      id: MusicMusicvideos
+    - cat: Audio/Other
+      desc: Music Other
+      id: MusicOthermusic
+    - cat: Audio/Video
+      desc: Music videos
+      id: Musicvideos
+    - cat: Console/NDS
+      desc: NDS
+      id: NDS
+    - cat: Other
+      desc: Other
+      id: Other
+    - cat: PC/Games
+      desc: Games Other
+      id: OtherGames
+    - cat: Movies/Other
+      desc: Movies Other
+      id: OtherMovies
+    - cat: Audio/Other
+      desc: Music Other
+      id: Othermusic
+    - cat: PC/Games
+      desc: Games PC
+      id: PCGames
+    - cat: Console/PS3
+      desc: PS3
+      id: PS3
+    - cat: Console/PS4
+      desc: PS4
+      id: PS4
+    - cat: Console/PSP
+      desc: PSP
+      id: PSP
+    - cat: TV
+      desc: TV
+      id: TV
+    - cat: Movies/UHD
+      desc: Movies UltraHD
+      id: UltraHD
+    - cat: XXX/WEB-DL
+      desc: Adult Video
+      id: Video
+    - cat: Console/Wii
+      desc: Wii
+      id: Wii
+    - cat: PC/0day
+      desc: Apps Windows
+      id: Windows
+    - cat: XXX/Other
+      desc: Adult Games
+      id: XXXGames
+    - cat: XXX/ImageSet
+      desc: Adult Pictures
+      id: XXXPictures
+    - cat: XXX/WEB-DL
+      desc: Adult Video
+      id: XXXVideo
+    - cat: Console/XBox 360
+      desc: Xbox360
+      id: Xbox360
+    modes:
+      search:
+      - q
+  description: kickasstorrents.to is a Public KickAssTorrent clone for MOVIES / TV
+    / GENERAL
+  encoding: UTF-8
+  id: kickasstorrents-to
+  language: en-US
+  legacylinks:
+  - https://kat.root.yt/
+  - https://kickasstorrents.abcproxy.org/
+  - https://kickasstorrents.to/
+  - https://kickasstorrent.cr/
+  - https://katcr.to/
+  - https://www.kickasstorrents.do/
+  links:
+  - https://kickass.torrentbay.st/
+  - https://kickass.torrentsbay.org/
+  - https://kickasstorrents.unblockninja.com/
+  - https://kickasstorrents.ninjaproxy1.com/
+  - https://kickasstorrents.proxyninja.org/
+  - https://kickasstorrents.proxyninja.net/
+  name: kickasstorrents.to
+  search:
+    fields:
+      category:
+        filters:
+        - args:
+          - '[>| ]+'
+          - ""
+          name: re_replace
+        selector: span > strong
+      date:
+        filters:
+        - name: timeago
+        selector: td.timeago
+      details:
+        attribute: href
+        selector: a.cellMainLink
+      download:
+        attribute: href
+        selector: a[href^="magnet:?xt="]
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        selector: td:nth-child(6)
+      seeders:
+        selector: td:nth-child(5)
+      size:
+        selector: td:nth-child(2)
+      title:
+        selector: a.cellMainLink
+      uploadvolumefactor:
+        text: "1"
+    paths:
+    - path: '{{ if .Keywords }}search/?q={{ .Keywords }}{{ else }}17/All/{{ end }}'
+    - path: '{{ if .Keywords }}search/?page=2&q={{ .Keywords }}{{ else }}17/All/?page=2{{
+        end }}'
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: table.data > tbody > tr:has(a[href^="magnet:?xt="])
+  settings:
+  - name: info_flaresolverr
+    type: info_flaresolverr
+  type: public

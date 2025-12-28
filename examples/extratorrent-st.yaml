@@ -1,0 +1,254 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: extratorrent-st
+spec:
+  caps:
+    categorymappings:
+    - cat: Movies/3D
+      desc: Movies 3D
+      id: 3D Movies
+    - cat: Audio
+      desc: Music AAC
+      id: AAC
+    - cat: XXX
+      desc: Adult / Porn
+      id: Adult / Porn
+    - cat: PC/Mobile-Android
+      desc: Software Android
+      id: Android
+    - cat: TV/Anime
+      desc: Anime
+      id: Anime
+    - cat: Audio/Audiobook
+      desc: Books Audiobook
+      id: Audio books
+    - cat: Movies
+      desc: Bollywood
+      id: Bollywood
+    - cat: Books/Comics
+      desc: Books Comics
+      id: Comics
+    - cat: Movies/DVD
+      desc: Movies DVD
+      id: DVD
+    - cat: TV/Documentary
+      desc: Documentary
+      id: Documentary
+    - cat: Movies/Foreign
+      desc: Movies Dubbed
+      id: Dubbed Movies
+    - cat: Books/EBook
+      desc: Books Ebook
+      id: Ebooks
+    - cat: TV/Anime
+      desc: Anime  English-translated
+      id: English-translated
+    - cat: TV/HD
+      desc: Episodes HD
+      id: Episodes HD
+    - cat: XXX/Other
+      desc: Adult Games
+      id: Games
+    - cat: XXX/Other
+      desc: Adult Hentai
+      id: Hentai
+    - cat: Movies/HD
+      desc: Movies HD
+      id: Highres Movies
+    - cat: PC
+      desc: Software Linux
+      id: Linux
+    - cat: TV/Anime
+      desc: Live Action [Non-English]
+      id: Live Action [Non-English]
+    - cat: Audio/Lossless
+      desc: Music Lossless
+      id: Lossless
+    - cat: Books/Comics
+      desc: Manga [English-translated]
+      id: Manga [English-translated]
+    - cat: Books/Comics
+      desc: Manga [Raw]
+      id: Manga [Raw]
+    - cat: Audio/MP3
+      desc: Music MP3
+      id: MP3
+    - cat: Movies
+      desc: Movies MP4
+      id: MP4
+    - cat: PC/Mac
+      desc: Software Mac
+      id: Mac
+    - cat: XXX/Other
+      desc: Adult Magazines
+      id: Magazines
+    - cat: Movies
+      desc: Movies clips
+      id: Movie clips
+    - cat: Movies
+      desc: Movies
+      id: Movies
+    - cat: Audio
+      desc: Music
+      id: Music
+    - cat: Audio/Video
+      desc: Music Videos
+      id: Music videos
+    - cat: Console/NDS
+      desc: Games NDS
+      id: NDS
+    - cat: PC
+      desc: Other Applications
+      id: Other Applications
+    - cat: Console/Other
+      desc: Games Other
+      id: Other Games
+    - cat: Movies/Other
+      desc: Movies Other
+      id: Other Movies
+    - cat: Audio/Other
+      desc: Music Other
+      id: Other Music
+    - cat: Other/Misc
+      desc: Other
+      id: Other
+    - cat: PC/Games
+      desc: PC Games
+      id: PC Games
+    - cat: Console/PS3
+      desc: Games PS3
+      id: PS3
+    - cat: Console/PS4
+      desc: Games PS4
+      id: PS4
+    - cat: Console/PSP
+      desc: Games PSP
+      id: PSP
+    - cat: XXX/ImageSet
+      desc: Adult Pictures
+      id: Pictures
+    - cat: Audio/Other
+      desc: Music Radio
+      id: Radio Shows
+    - cat: TV/Anime
+      desc: Anime Raw
+      id: Raw
+    - cat: PC/0day
+      desc: Software
+      id: Software
+    - cat: TV/Anime
+      desc: Anime Subs
+      id: Subs
+    - cat: Console/Other
+      desc: Games Switch
+      id: Switch
+    - cat: TV
+      desc: TV
+      id: TV
+    - cat: Movies/UHD
+      desc: Movies UHD
+      id: UltraHD
+    - cat: XXX
+      desc: Adult / Porn
+      id: Video
+    - cat: Console/Wii
+      desc: Games Wii
+      id: Wii
+    - cat: PC
+      desc: Software Windows
+      id: Windows
+    - cat: Console/XBox 360
+      desc: Games Xbox360
+      id: Xbox360
+    modes:
+      search:
+      - q
+  description: ExtraTorrent.st is a Public tracker for MOVIE / TV / GENERAL magnets
+  encoding: UTF-8
+  id: extratorrent-st
+  language: en-US
+  legacylinks:
+  - https://extratorrent.mrunblock.bond/
+  - https://extratorrent.nocensor.cloud/
+  - https://extratorrent.unblockit.download/
+  links:
+  - https://extratorrent.st/
+  - https://extratorrent.ninjaproxy1.com/
+  - https://extratorrent.proxyninja.org/
+  - https://extratorrent.proxyninja.net/
+  name: ExtraTorrent.st
+  search:
+    fields:
+      category:
+        filters:
+        - args:
+          - 'in '
+          - ""
+          name: replace
+        - name: trim
+        selector: span.c_tor
+      date:
+        filters:
+        - args:
+          - m
+          - ' minutes'
+          name: replace
+        - args:
+          - h
+          - ' hours'
+          name: replace
+        - args:
+          - "y"
+          - ' years'
+          name: replace
+        - args:
+          - d
+          - ' days'
+          name: replace
+        - args:
+          - w
+          - ' weeks'
+          name: replace
+        - name: timeago
+        selector: td:nth-last-of-type(5)
+      details:
+        attribute: href
+        selector: a[href^="/torrent/"]
+      download:
+        attribute: href
+        selector: a[href^="magnet:?xt="]
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        default: "0"
+        optional: true
+        selector: td.ly, td.ln
+      seeders:
+        default: "0"
+        optional: true
+        selector: td.sy, td.sn
+      size:
+        selector: td:nth-last-of-type(4)
+      title:
+        selector: a[href^="/torrent/"]:not([href$="comments"])
+      uploadvolumefactor:
+        text: "1"
+    keywordsfilters:
+    - args:
+      - '[\s]+'
+      - .
+      name: re_replace
+    paths:
+    - path: '{{ if .Keywords }}search/?srt=added&order=desc&search={{ .Keywords }}&new=1&x=0&y=0{{
+        else }}{{ end }}'
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: tr[class^="tl"]:has(a[href^="magnet:?xt="])
+  settings:
+  - name: info_flaresolverr
+    type: info_flaresolverr
+  type: public

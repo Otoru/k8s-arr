@@ -1,0 +1,64 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: pc-torrent
+spec:
+  caps:
+    categorymappings:
+    - cat: PC/Games
+      desc: Games
+      id: "1"
+    modes:
+      search:
+      - q
+  description: PC-torrent is a RUSSIAN Public Torrent Tracker for Games
+  download:
+    selectors:
+    - attribute: href
+      selector: a[href*="/engine/download.php?id="]
+  encoding: windows-1251
+  id: pctorrent
+  language: ru-RU
+  legacylinks:
+  - https://pc-torrent.org/
+  - https://pc-torrent.pro/
+  links:
+  - https://pc-torrents.games/
+  name: PC-torrent
+  search:
+    fields:
+      category:
+        text: "1"
+      date:
+        text: now
+      details:
+        attribute: href
+        selector: a
+      download:
+        attribute: href
+        selector: a
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        text: "1"
+      poster:
+        attribute: src
+        selector: img
+      seeders:
+        text: "1"
+      size:
+        selector: div.d3-raz
+      title:
+        selector: div.d3-title
+      uploadvolumefactor:
+        text: "1"
+    paths:
+    - path: '{{ if .Keywords }}?do=search&subaction=search&search_start=0&full_search=1&result_from=1&story={{
+        .Keywords }}{{ else }}{{ end }}'
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: div.dshort:has(div.d3-raz):not(:has(div.d3-raz:contains("Анонс!")))
+  type: public

@@ -1,0 +1,54 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: acg-rip
+spec:
+  caps:
+    categories:
+      "1": TV
+    modes:
+      search:
+      - q
+  description: ACG.RIP is a CHINESE Public torrent tracker for the latest anime and
+    Japanese related torrents
+  encoding: UTF-8
+  followredirect: true
+  id: acgrip
+  language: zh-CN
+  links:
+  - https://acg.rip/
+  name: ACG.RIP
+  search:
+    fields:
+      category:
+        text: "1"
+      date:
+        attribute: datetime
+        selector: td.date time
+      details:
+        attribute: href
+        selector: td.title > span.title a
+      download:
+        attribute: href
+        selector: td.action a
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        text: "1"
+      seeders:
+        text: "1"
+      size:
+        selector: td.size
+      title:
+        selector: td.title > span.title a
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      term: '{{ .Keywords }}'
+    paths:
+    - path: /
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: tbody tr
+  type: public

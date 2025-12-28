@@ -1,0 +1,270 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: torrentdownload
+spec:
+  caps:
+    categorymappings:
+    - cat: XXX
+      desc: Adult
+      id: Adult
+    - cat: XXX
+      desc: Adult Porn HD Video
+      id: AdultPornHDVideo
+    - cat: XXX
+      desc: Adult Porn Pictures
+      id: AdultPornPictures
+    - cat: XXX
+      desc: Adult Porn Video
+      id: AdultPornVideo
+    - cat: TV/Anime
+      desc: Anime
+      id: Anime
+    - cat: TV/Anime
+      desc: Anime English translated
+      id: AnimeEnglishtranslated
+    - cat: TV/Anime
+      desc: Anime Other
+      id: AnimeAnimeOther
+    - cat: PC/0day
+      desc: Applications
+      id: Applications
+    - cat: PC/Mobile-Android
+      desc: Applications Android
+      id: ApplicationsAndroid
+    - cat: PC/0day
+      desc: Applications Windows
+      id: ApplicationsWindows
+    - cat: Audio/Audiobook
+      desc: Books Audiobooks
+      id: AudioBooks
+    - cat: Audio/Audiobook
+      desc: Books Audiobooks
+      id: AudioAudiobooks
+    - cat: Audio/Lossless
+      desc: Audio Lossless
+      id: AudioLossless
+    - cat: Audio/MP3
+      desc: Audio Music
+      id: AudioMusic
+    - cat: Books
+      desc: Books Academic
+      id: BooksAcademic
+    - cat: Books/Comics
+      desc: Books Comics
+      id: BooksComics
+    - cat: Books/EBook
+      desc: Books Ebooks
+      id: BooksEbooks
+    - cat: Books
+      desc: Books Educational
+      id: BooksEducational
+    - cat: Books/Mags
+      desc: Books Magazines
+      id: BooksMagazines
+    - cat: Books
+      desc: Books Fiction
+      id: BooksFiction
+    - cat: Books
+      desc: Books Nonfiction
+      id: BooksNonfiction
+    - cat: Books
+      desc: Books Textbooks
+      id: BooksTextbooks
+    - cat: Books/EBook
+      desc: Books Ebooks
+      id: Ebooks
+    - cat: Console
+      desc: Games
+      id: Games
+    - cat: PC/Games
+      desc: Games Windows
+      id: GamesWindows
+    - cat: Movies
+      desc: Movies
+      id: Movies
+    - cat: Movies
+      desc: Movies Action
+      id: MoviesAction
+    - cat: Movies
+      desc: Movies Concerts
+      id: MoviesConcerts
+    - cat: Movies
+      desc: Movies Crime
+      id: MoviesCrime
+    - cat: TV/Documentary
+      desc: Movies Documentary
+      id: MoviesDocumentary
+    - cat: Movies
+      desc: Movies Dubbed Movies
+      id: MoviesDubbedMovies
+    - cat: Movies
+      desc: Movies Highres Movies
+      id: MoviesHighresMovies
+    - cat: Audio/Video
+      desc: Movies Musicvideos
+      id: MoviesMusicvideos
+    - cat: Movies
+      desc: Movies Thriller
+      id: MoviesThriller
+    - cat: Audio
+      desc: Music
+      id: Music
+    - cat: Audio
+      desc: Music Hardrock
+      id: MusicHardrock
+    - cat: Audio/MP3
+      desc: Music Mp3
+      id: MusicMp
+    - cat: Audio/Lossless
+      desc: Music FLAC
+      id: MusicFLAC
+    - cat: Audio/Lossless
+      desc: Music Lossless
+      id: MusicLossless
+    - cat: Audio
+      desc: Music R&B
+      id: MusicRB
+    - cat: Audio
+      desc: Music Trance House Dance
+      id: MusicTranceHouseDance
+    - cat: Other
+      desc: Other
+      id: Other
+    - cat: Books/EBook
+      desc: Other Ebooks
+      id: OtherEbooks
+    - cat: Other
+      desc: Other Comics
+      id: OtherComics
+    - cat: Other
+      desc: Other Tutorials
+      id: OtherTutorials
+    - cat: Other
+      desc: Other Unsorted
+      id: OtherUnsorted
+    - cat: Other/Misc
+      desc: Pictures Other
+      id: PicturesPicturesOther
+    - cat: Other/Misc
+      desc: Pictures Wallpapers
+      id: PicturesWallpapers
+    - cat: PC/0day
+      desc: Software
+      id: Software
+    - cat: TV
+      desc: TV
+      id: TV
+    - cat: TV
+      desc: TV BBC
+      id: TVBBC
+    - cat: TV
+      desc: TV Ellen DeGeneres
+      id: TVEllenDeGeneres
+    - cat: TV/Other
+      desc: TV Other
+      id: TVOther
+    - cat: TV
+      desc: TV shows
+      id: TVshows
+    - cat: TV
+      desc: Television
+      id: Television
+    - cat: Movies
+      desc: Movies Video Mobile
+      id: VideoMobile
+    - cat: Movies
+      desc: Video Movies
+      id: VideoMovies
+    - cat: Audio/Video
+      desc: Video Music
+      id: VideoMusic
+    - cat: XXX
+      desc: XXX
+      id: XXX
+    - cat: XXX
+      desc: XXX Video
+      id: XXXVideo
+    - cat: XXX
+      desc: XXX HD Video
+      id: XXXHDVideo
+    - cat: XXX
+      desc: XXX Pictures
+      id: XXXPictures
+    modes:
+      search:
+      - q
+  description: TorrentDownload is a Public torrent meta-search engine
+  download:
+    selectors:
+    - attribute: href
+      selector: a[href^="magnet:?xt="]
+  encoding: UTF-8
+  id: torrentdownload
+  language: en-US
+  legacylinks:
+  - https://torrentdownload.mrunblock.bond/
+  - https://torrentdownload.nocensor.cloud/
+  - https://torrentdownload.unblockit.download/
+  links:
+  - https://www.torrentdownload.info/
+  name: TorrentDownload
+  search:
+    fields:
+      category:
+        filters:
+        - args:
+          - '[^A-Za-z]+'
+          - ""
+          name: re_replace
+        selector: div.tt-name > span.smallish
+      date:
+        filters:
+        - args:
+          - 'right '
+          - ""
+          name: replace
+        - args:
+          - Last Month
+          - 1 month ago
+          name: replace
+        - args:
+          - +
+          - ' ago'
+          name: replace
+        - name: timeago
+        selector: td:nth-child(2)
+      details:
+        attribute: href
+        selector: div.tt-name > a[href^="/"]
+      download:
+        attribute: href
+        selector: div.tt-name > a[href^="/"]
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        selector: td.tdleech
+      seeders:
+        selector: td.tdseed
+      size:
+        selector: td:nth-child(3)
+      title:
+        selector: div.tt-name > a[href^="/"]
+      uploadvolumefactor:
+        text: "1"
+    paths:
+    - path: '{{ if .Keywords }}search{{ re_replace .Config.sort "_" "" }}?q={{ .Keywords
+        }}{{ else }}/{{ end }}'
+    rows:
+      count: {}
+      dateheaders: {}
+      selector: table.table2 > tbody > tr:has(span.smallish)
+  settings:
+  - default: d
+    label: Sort requested from site (Applies only to Search with Keywords)
+    name: sort
+    options:
+      _: seeders
+      d: created
+    type: select
+  type: public

@@ -1,0 +1,73 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: Indexer
+metadata:
+  name: vst-torrentz
+spec:
+  caps:
+    categories:
+      PC: PC
+    modes:
+      search:
+      - q
+  description: VST Torrentz is a Public site for AUDIO apps, plugins and samples
+  download:
+    selectors:
+    - attribute: href
+      selector: div.wp-block-file a
+  encoding: UTF-8
+  id: vsttorrents
+  language: en-US
+  legacylinks:
+  - https://vsttorrents.net/
+  - https://looptorrent.net/
+  links:
+  - https://vsttorrentz.net/
+  name: VST Torrentz
+  search:
+    fields:
+      category:
+        text: PC
+      date:
+        text: '{{ if or .Result.date_year .Result.date_time }}{{ or .Result.date_year
+          .Result.date_time }}{{ else }}now{{ end }}'
+      date_time:
+        attribute: datetime
+        optional: true
+        selector: time
+      date_year:
+        optional: true
+        selector: .post-date
+      description:
+        selector: .entry-summary
+      details:
+        attribute: href
+        selector: .entry-title > a
+      download:
+        attribute: href
+        selector: .entry-title > a
+      downloadvolumefactor:
+        text: "0"
+      leechers:
+        text: "1"
+      poster:
+        attribute: data-src
+        selector: .wp-post-image
+      seeders:
+        text: "1"
+      size:
+        text: 512 MB
+      title:
+        selector: .entry-title
+      uploadvolumefactor:
+        text: "1"
+    inputs:
+      s: '{{ .Keywords }}'
+    paths:
+    - path: /
+    rows:
+      count: {}
+      dateheaders: {}
+      filters:
+      - name: andmatch
+      selector: article:has(.entry-title)
+  type: public

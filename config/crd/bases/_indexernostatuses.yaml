@@ -1,0 +1,647 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: indexernostatuses.
+spec:
+  group: ""
+  names:
+    kind: IndexerNoStatus
+    listKind: IndexerNoStatusList
+    plural: indexernostatuses
+    singular: indexernostatus
+  scope: Namespaced
+  versions:
+  - name: ""
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IndexerSpec defines the desired state of Indexer
+            properties:
+              caps:
+                properties:
+                  allowrawsearch:
+                    type: boolean
+                  categories:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  categorymappings:
+                    items:
+                      properties:
+                        cat:
+                          type: string
+                        default:
+                          type: boolean
+                        desc:
+                          type: string
+                        id:
+                          type: string
+                      required:
+                      - cat
+                      - id
+                      type: object
+                    type: array
+                  modes:
+                    properties:
+                      book-search:
+                        items:
+                          type: string
+                        type: array
+                      movie-search:
+                        items:
+                          type: string
+                        type: array
+                      music-search:
+                        items:
+                          type: string
+                        type: array
+                      search:
+                        items:
+                          type: string
+                        type: array
+                      tv-search:
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - search
+                    type: object
+                required:
+                - modes
+                type: object
+              certificates:
+                items:
+                  type: string
+                type: array
+              description:
+                type: string
+              download:
+                properties:
+                  before:
+                    properties:
+                      inputs:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      method:
+                        type: string
+                      path:
+                        type: string
+                      pathselector:
+                        properties:
+                          text:
+                            type: string
+                        type: object
+                    type: object
+                  headers:
+                    additionalProperties:
+                      items:
+                        type: string
+                      type: array
+                    type: object
+                  infohash:
+                    properties:
+                      hash:
+                        type: string
+                      type:
+                        type: string
+                    type: object
+                  method:
+                    type: string
+                  selectors:
+                    items:
+                      properties:
+                        attribute:
+                          type: string
+                        case:
+                          additionalProperties:
+                            type: string
+                          type: object
+                        default:
+                          type: string
+                        filters:
+                          items:
+                            properties:
+                              args:
+                                items:
+                                  type: string
+                                type: array
+                              name:
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          type: array
+                        optional:
+                          type: boolean
+                        remove:
+                          type: string
+                        selector:
+                          type: string
+                        text:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              encoding:
+                type: string
+              followredirect:
+                type: boolean
+              id:
+                type: string
+              language:
+                type: string
+              legacylinks:
+                items:
+                  type: string
+                type: array
+              links:
+                items:
+                  type: string
+                type: array
+              login:
+                properties:
+                  captcha:
+                    properties:
+                      input:
+                        type: string
+                      selector:
+                        type: string
+                      type:
+                        type: string
+                    required:
+                    - input
+                    - selector
+                    - type
+                    type: object
+                  cookies:
+                    items:
+                      type: string
+                    type: array
+                  error:
+                    items:
+                      properties:
+                        message:
+                          properties:
+                            attribute:
+                              type: string
+                            case:
+                              additionalProperties:
+                                type: string
+                              type: object
+                            default:
+                              type: string
+                            filters:
+                              items:
+                                properties:
+                                  args:
+                                    items:
+                                      type: string
+                                    type: array
+                                  name:
+                                    type: string
+                                required:
+                                - name
+                                type: object
+                              type: array
+                            optional:
+                              type: boolean
+                            remove:
+                              type: string
+                            selector:
+                              type: string
+                            text:
+                              type: string
+                          type: object
+                        path:
+                          type: string
+                        selector:
+                          type: string
+                      required:
+                      - selector
+                      type: object
+                    type: array
+                  form:
+                    type: string
+                  getselectorinputs:
+                    additionalProperties:
+                      properties:
+                        attribute:
+                          type: string
+                        case:
+                          additionalProperties:
+                            type: string
+                          type: object
+                        default:
+                          type: string
+                        filters:
+                          items:
+                            properties:
+                              args:
+                                items:
+                                  type: string
+                                type: array
+                              name:
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          type: array
+                        optional:
+                          type: boolean
+                        remove:
+                          type: string
+                        selector:
+                          type: string
+                        text:
+                          type: string
+                      type: object
+                    type: object
+                  headers:
+                    additionalProperties:
+                      items:
+                        type: string
+                      type: array
+                    type: object
+                  inputs:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  method:
+                    type: string
+                  path:
+                    type: string
+                  selectorinputs:
+                    additionalProperties:
+                      properties:
+                        attribute:
+                          type: string
+                        case:
+                          additionalProperties:
+                            type: string
+                          type: object
+                        default:
+                          type: string
+                        filters:
+                          items:
+                            properties:
+                              args:
+                                items:
+                                  type: string
+                                type: array
+                              name:
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          type: array
+                        optional:
+                          type: boolean
+                        remove:
+                          type: string
+                        selector:
+                          type: string
+                        text:
+                          type: string
+                      type: object
+                    type: object
+                  selectors:
+                    type: boolean
+                  submitpath:
+                    type: string
+                  test:
+                    properties:
+                      path:
+                        type: string
+                      selector:
+                        type: string
+                    required:
+                    - path
+                    type: object
+                type: object
+              name:
+                type: string
+              requestDelay:
+                type: string
+              search:
+                properties:
+                  allowEmptyInputs:
+                    type: boolean
+                  error:
+                    items:
+                      properties:
+                        message:
+                          properties:
+                            attribute:
+                              type: string
+                            case:
+                              additionalProperties:
+                                type: string
+                              type: object
+                            default:
+                              type: string
+                            filters:
+                              items:
+                                properties:
+                                  args:
+                                    items:
+                                      type: string
+                                    type: array
+                                  name:
+                                    type: string
+                                required:
+                                - name
+                                type: object
+                              type: array
+                            optional:
+                              type: boolean
+                            remove:
+                              type: string
+                            selector:
+                              type: string
+                            text:
+                              type: string
+                          type: object
+                        path:
+                          type: string
+                        selector:
+                          type: string
+                      required:
+                      - selector
+                      type: object
+                    type: array
+                  fields:
+                    additionalProperties:
+                      properties:
+                        attribute:
+                          type: string
+                        case:
+                          additionalProperties:
+                            type: string
+                          type: object
+                        default:
+                          type: string
+                        filters:
+                          items:
+                            properties:
+                              args:
+                                items:
+                                  type: string
+                                type: array
+                              name:
+                                type: string
+                            required:
+                            - name
+                            type: object
+                          type: array
+                        optional:
+                          type: boolean
+                        remove:
+                          type: string
+                        selector:
+                          type: string
+                        text:
+                          type: string
+                      type: object
+                    description: |-
+                      FieldsBlock is a map of selector blocks, but we can't map[string]SelectorBlock easily in CRD if keys are dynamic.
+                      However, the keys are somewhat standard (title, seeders, etc.) but can have suffixes.
+                      For now, we'll use runtime.RawExtension or just map[string]SelectorBlock and hope controller-gen handles it or we use +kubebuilder:pruning:PreserveUnknownFields
+                      Actually, map[string]SelectorBlock usually works.
+                    type: object
+                  headers:
+                    additionalProperties:
+                      items:
+                        type: string
+                      type: array
+                    type: object
+                  inputs:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  keywordsfilters:
+                    items:
+                      properties:
+                        args:
+                          items:
+                            type: string
+                          type: array
+                        name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  path:
+                    type: string
+                  paths:
+                    items:
+                      properties:
+                        categories:
+                          items:
+                            type: string
+                          type: array
+                        followredirect:
+                          type: boolean
+                        inheritinputs:
+                          type: boolean
+                        inputs:
+                          additionalProperties:
+                            type: string
+                          type: object
+                        method:
+                          type: string
+                        path:
+                          type: string
+                        queryseparator:
+                          type: string
+                        response:
+                          properties:
+                            noResultsMessage:
+                              type: string
+                            type:
+                              type: string
+                          required:
+                          - type
+                          type: object
+                      required:
+                      - path
+                      type: object
+                    type: array
+                  preprocessingfilters:
+                    items:
+                      properties:
+                        args:
+                          items:
+                            type: string
+                          type: array
+                        name:
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  rows:
+                    properties:
+                      after:
+                        type: integer
+                      attribute:
+                        type: string
+                      case:
+                        additionalProperties:
+                          type: string
+                        type: object
+                      count:
+                        properties:
+                          attribute:
+                            type: string
+                          case:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          default:
+                            type: string
+                          filters:
+                            items:
+                              properties:
+                                args:
+                                  items:
+                                    type: string
+                                  type: array
+                                name:
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            type: array
+                          optional:
+                            type: boolean
+                          remove:
+                            type: string
+                          selector:
+                            type: string
+                          text:
+                            type: string
+                        type: object
+                      dateheaders:
+                        properties:
+                          attribute:
+                            type: string
+                          case:
+                            additionalProperties:
+                              type: string
+                            type: object
+                          default:
+                            type: string
+                          filters:
+                            items:
+                              properties:
+                                args:
+                                  items:
+                                    type: string
+                                  type: array
+                                name:
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            type: array
+                          optional:
+                            type: boolean
+                          remove:
+                            type: string
+                          selector:
+                            type: string
+                          text:
+                            type: string
+                        type: object
+                      filters:
+                        items:
+                          properties:
+                            args:
+                              items:
+                                type: string
+                              type: array
+                            name:
+                              type: string
+                          required:
+                          - name
+                          type: object
+                        type: array
+                      missingAttributeEqualsNoResults:
+                        type: boolean
+                      multiple:
+                        type: boolean
+                      optional:
+                        type: boolean
+                      remove:
+                        type: string
+                      selector:
+                        type: string
+                      text:
+                        type: string
+                    type: object
+                required:
+                - fields
+                - rows
+                type: object
+              settings:
+                items:
+                  properties:
+                    default:
+                      type: string
+                    defaults:
+                      items:
+                        type: string
+                      type: array
+                    label:
+                      type: string
+                    name:
+                      type: string
+                    options:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type:
+                      type: string
+                  required:
+                  - name
+                  - type
+                  type: object
+                type: array
+              testlinktorrent:
+                type: boolean
+              type:
+                type: string
+            required:
+            - caps
+            - id
+            - language
+            - links
+            - name
+            - type
+            type: object
+        type: object
+    served: true
+    storage: true
