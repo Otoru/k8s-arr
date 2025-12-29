@@ -134,9 +134,10 @@ func (r *TorrentRequestReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		})
 		l.Info("No results found across all indexers")
 
-		// Record Duration
+		// Record Duration and Failure Count
 		duration := time.Since(tr.CreationTimestamp.Time).Seconds()
-		torrentRequestDuration.WithLabelValues("failed").Observe(duration)
+		torrentRequestFailureDuration.Observe(duration)
+		torrentRequestsFailedTotal.Inc()
 
 		if err := r.Status().Update(ctx, &tr); err != nil {
 			return ctrl.Result{}, err
@@ -218,7 +219,8 @@ func (r *TorrentRequestReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 
 	// Record Duration
 	duration := time.Since(tr.CreationTimestamp.Time).Seconds()
-	torrentRequestDuration.WithLabelValues("success").Observe(duration)
+	torrentRequestDuration.WithLabelValues(bestTorrent.Indexer).Observe(duration)
+	torrentsCreatedTotal.WithLabelValues(bestTorrent.Indexer).Inc()
 
 	if err := r.Status().Update(ctx, &tr); err != nil {
 		return ctrl.Result{}, err

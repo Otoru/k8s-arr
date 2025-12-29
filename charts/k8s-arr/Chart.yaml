@@ -1,0 +1,14 @@
+apiVersion: v2
+name: k8s-arr
+description: A Helm chart for the k8s-arr Torrent Operator
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - torrent
+  - operator
+  - kubernetes
+sources:
+  - https://github.com/Otoru/k8s-arr
+maintainers:
+  - name: Otoru

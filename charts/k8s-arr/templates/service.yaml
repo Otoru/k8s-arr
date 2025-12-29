@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "k8s-arr.fullname" . }}-controller-manager-metrics-service
+  labels:
+    control-plane: controller-manager
+    app.kubernetes.io/name: service
+    app.kubernetes.io/instance: controller-manager-metrics-service
+    app.kubernetes.io/component: manager
+    app.kubernetes.io/created-by: k8s-arr
+    app.kubernetes.io/part-of: k8s-arr
+    app.kubernetes.io/managed-by: kustomize
+    {{- include "k8s-arr.labels" . | nindent 4 }}
+spec:
+  ports:
+  - name: https
+    port: 8443
+    protocol: TCP
+    targetPort: https
+  - name: stats
+    port: {{ .Values.metrics.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.metrics.service.port }}
+  selector:
+    control-plane: controller-manager
+    {{- include "k8s-arr.selectorLabels" . | nindent 4 }}

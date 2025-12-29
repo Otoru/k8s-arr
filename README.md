@@ -32,12 +32,9 @@ A Kubernetes Operator for managing Torrent searches and requests similarly to ho
 make deploy
 ```
 
-**2. (Optional) Deploy FlareSolverr**
-If you need to access sites protected by Cloudflare:
+**2. (Optional) Configure FlareSolverr**
 
-```bash
-kubectl apply -f flaresolverr.yaml
-```
+If you need to access sites protected by Cloudflare, you can deploy [FlareSolverr](https://github.com/FlareSolverr/FlareSolverr) and update the operator deployment to start with the `--flaresolverr-url` flag pointing to the service (e.g., `http://flaresolverr:8191`).
 
 ## 📝 Usage
 
@@ -95,7 +92,10 @@ kubectl get torrentrequest ubuntu-iso
 The operator exposes Prometheus metrics at `:8080/metrics`:
 
 - `torrent_searches_total{indexer, status}`: Search volume and success/failure rates.
-- `torrent_request_duration_seconds`: Histogram of time taken to find a torrent.
+- `torrent_request_duration_seconds{indexer}`: Histogram of time taken to successfully find a torrent.
+- `torrent_request_failure_duration_seconds`: Histogram of time taken for a TorrentRequest to fail (when no torrents are found).
+- `torrents_created_total{indexer}`: Counter of successfully created torrents.
+- `torrent_requests_failed_total`: Counter of failed torrent requests.
 
 ## 🤝 Contributing
 

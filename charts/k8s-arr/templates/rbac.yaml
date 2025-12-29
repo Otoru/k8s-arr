@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.serviceAccount.name }}
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: k8s-arr
+    app.kubernetes.io/part-of: k8s-arr
+    app.kubernetes.io/managed-by: kustomize
+    {{- include "k8s-arr.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "k8s-arr.fullname" . }}-manager-role
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: k8s-arr
+    app.kubernetes.io/part-of: k8s-arr
+    app.kubernetes.io/managed-by: kustomize
+    {{- include "k8s-arr.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - torrents.vitoru.fun
+  resources:
+  - indexers
+  - torrentrequests
+  - torrents
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - torrents.vitoru.fun
+  resources:
+  - indexers/status
+  - torrentrequests/status
+  - torrents/status
+  verbs:
+  - get
+  - patch
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "k8s-arr.fullname" . }}-manager-rolebinding
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: k8s-arr
+    app.kubernetes.io/part-of: k8s-arr
+    app.kubernetes.io/managed-by: kustomize
+    {{- include "k8s-arr.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "k8s-arr.fullname" . }}-manager-role
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "k8s-arr.fullname" . }}-metrics-reader
+  labels:
+    app.kubernetes.io/component: kube-rbac-proxy
+    app.kubernetes.io/created-by: k8s-arr
+    app.kubernetes.io/part-of: k8s-arr
+    app.kubernetes.io/managed-by: kustomize
+    {{- include "k8s-arr.labels" . | nindent 4 }}
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get

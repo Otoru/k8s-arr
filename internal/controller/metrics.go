@@ -17,14 +17,37 @@ var (
 	torrentRequestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Name:    "torrent_request_duration_seconds",
-			Help:    "Time taken to process a TorrentRequest end-to-end",
+			Help:    "Time taken to process a successful TorrentRequest end-to-end",
 			Buckets: []float64{1, 5, 10, 30, 60, 120, 300},
 		},
-		[]string{"status"},
+		[]string{"indexer"},
+	)
+
+	torrentRequestFailureDuration = prometheus.NewHistogram(
+		prometheus.HistogramOpts{
+			Name:    "torrent_request_failure_duration_seconds",
+			Help:    "Time taken for a TorrentRequest to fail end-to-end",
+			Buckets: []float64{1, 5, 10, 30, 60, 120, 300},
+		},
+	)
+
+	torrentsCreatedTotal = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "torrents_created_total",
+			Help: "Total number of torrents created",
+		},
+		[]string{"indexer"},
+	)
+
+	torrentRequestsFailedTotal = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Name: "torrent_requests_failed_total",
+			Help: "Total number of failed torrent requests",
+		},
 	)
 )
 
 func init() {
 	// Register custom metrics with the global prometheus registry
-	metrics.Registry.MustRegister(torrentSearchesTotal, torrentRequestDuration)
+	metrics.Registry.MustRegister(torrentSearchesTotal, torrentRequestDuration, torrentRequestFailureDuration, torrentsCreatedTotal, torrentRequestsFailedTotal)
 }
