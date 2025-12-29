@@ -80,7 +80,7 @@ func (r *TorrentRequestReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 	// Iterate and search
 	for _, indexer := range indexerList.Items {
 		// Skip unhealthy
-		if !indexer.Status.Healthy {
+		if !meta.IsStatusConditionTrue(indexer.Status.Conditions, "Ready") {
 			continue
 		}
 		// Skip if user requested specific indexers

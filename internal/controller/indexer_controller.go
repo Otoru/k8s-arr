@@ -26,6 +26,7 @@ import (
 	"time"
 
 	"k8s.io/apimachinery/pkg/api/errors"
+	apimeta "k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -61,12 +62,18 @@ func (r *IndexerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		return ctrl.Result{}, err
 	}
 
+	// Initialize status if needed
+	if indexer.Status.Conditions == nil {
+		indexer.Status.Conditions = []metav1.Condition{}
+	}
+
 	l.Info("Reconciling Indexer", "name", indexer.Name)
 
 	needsCheck := true
 	// Check if we need to run health check (e.g., every 15 minutes)
-	if indexer.Status.LastHealthCheckTime != nil {
-		if time.Since(indexer.Status.LastHealthCheckTime.Time) < 15*time.Minute {
+	readyCondition := apimeta.FindStatusCondition(indexer.Status.Conditions, "Ready")
+	if readyCondition != nil {
+		if time.Since(readyCondition.LastTransitionTime.Time) < 15*time.Minute {
 			needsCheck = false
 		}
 	}
@@ -75,10 +82,25 @@ func (r *IndexerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		l.Info("Running health check", "indexer", indexer.Name)
 		healthy, errMsg := r.checkHealth(ctx, &indexer)
 
-		indexer.Status.Healthy = healthy
-		indexer.Status.ErrorMessage = errMsg
-		now := metav1.Now()
-		indexer.Status.LastHealthCheckTime = &now
+		status := metav1.ConditionTrue
+		reason := "HealthCheckSucceeded"
+		message := "Indexer is healthy"
+
+		if !healthy {
+			status = metav1.ConditionFalse
+			reason = "HealthCheckFailed"
+			message = errMsg
+		}
+
+		newCondition := metav1.Condition{
+			Type:               "Ready",
+			Status:             status,
+			Reason:             reason,
+			Message:            message,
+			LastTransitionTime: metav1.Now(),
+		}
+
+		apimeta.SetStatusCondition(&indexer.Status.Conditions, newCondition)
 
 		if err := r.Status().Update(ctx, &indexer); err != nil {
 			l.Error(err, "Failed to update Indexer status")

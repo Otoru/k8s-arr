@@ -206,23 +206,16 @@ type InfoHashBlock struct {
 
 // IndexerStatus defines the observed state of Indexer
 type IndexerStatus struct {
-	// Healthy indicates if the indexer is considered healthy.
-	Healthy bool `json:"healthy"`
-
-	// LastHealthCheckTime is the last time the health check was performed.
-	// +optional
-	LastHealthCheckTime *metav1.Time `json:"lastHealthCheckTime,omitempty"`
-
-	// ErrorMessage captures the error from the last failed health check.
-	// +optional
-	ErrorMessage string `json:"errorMessage,omitempty"`
+	// Conditions store the status conditions of the Indexer instances
+	// +operator-sdk:csv:customresourcedefinitions:type=status
+	Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="Healthy",type="boolean",JSONPath=".status.healthy"
-// +kubebuilder:printcolumn:name="Last Check",type="date",JSONPath=".status.lastHealthCheckTime"
-// +kubebuilder:printcolumn:name="Error",type="string",JSONPath=".status.errorMessage"
+// +kubebuilder:printcolumn:name="Ready",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
+// +kubebuilder:printcolumn:name="Status",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].message"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 
 // Indexer is the Schema for the indexers API
 type Indexer struct {
