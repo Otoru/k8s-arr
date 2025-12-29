@@ -45,7 +45,7 @@ var _ = Describe("TorrentRequest Controller", func() {
 				Expect(req.URL.Path).To(Equal("/search"))
 				Expect(req.URL.Query().Get("q")).To(Equal("ubuntu"))
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte(`
+				_, err := w.Write([]byte(`
 						<html>
 							<table>
 								<tr class="result">
@@ -58,6 +58,7 @@ var _ = Describe("TorrentRequest Controller", func() {
 							</table>
 						</html>
 					`))
+				Expect(err).To(Succeed())
 			}
 			// Append the same handler multiple times to allow for controller retries (Conflict/Optimistic Locking)
 			for i := 0; i < 5; i++ {

@@ -162,7 +162,10 @@ func (r *TorrentRequestReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		if tr.Spec.MinSeeders > 0 {
 			l.Info("No results met minSeeders requirement")
 			tr.Status.State = "Failed"
-			r.Status().Update(ctx, &tr)
+			if err := r.Status().Update(ctx, &tr); err != nil {
+				l.Error(err, "Failed to update status")
+				return ctrl.Result{}, err
+			}
 			return ctrl.Result{}, nil
 		}
 		bestTorrent = &allResults[0]

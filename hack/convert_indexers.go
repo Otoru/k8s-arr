@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,13 +24,15 @@ func main() {
 		panic(err)
 	}
 
-	files, err := ioutil.ReadDir(inputDir)
+	files, err := os.ReadDir(inputDir)
 	if err != nil {
 		panic(err)
 	}
 
 	scheme := runtime.NewScheme()
-	v1alpha1.AddToScheme(scheme)
+	if err := v1alpha1.AddToScheme(scheme); err != nil {
+		panic(err)
+	}
 	serializer := json.NewSerializerWithOptions(json.DefaultMetaFactory, scheme, scheme, json.SerializerOptions{Yaml: true})
 
 	for _, file := range files {
@@ -39,7 +40,7 @@ func main() {
 			continue
 		}
 
-		content, err := ioutil.ReadFile(filepath.Join(inputDir, file.Name()))
+		content, err := os.ReadFile(filepath.Join(inputDir, file.Name()))
 		if err != nil {
 			fmt.Printf("Error reading %s: %v\n", file.Name(), err)
 			continue

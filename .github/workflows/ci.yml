@@ -7,32 +7,13 @@ on:
     branches: ["main"]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.23"
-      - name: Test
-        run: make test
+  quality:
+    uses: ./.github/workflows/checks.yml
 
-  lint:
+  build-check:
+    name: Build Check
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.23"
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: v1.60
-
-  build:
-    runs-on: ubuntu-latest
+    needs: quality
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
