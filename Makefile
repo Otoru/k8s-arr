@@ -248,3 +248,9 @@ endef
 define gomodver
 $(shell go list -m -f '{{if .Replace}}{{.Replace.Version}}{{else}}{{.Version}}{{end}}' $(1) 2>/dev/null)
 endef
+
+.PHONY: helm-update
+helm-update: manifests ## Sync CRDs to Helm Chart
+	mkdir -p charts/k8s-arr/crds
+	cp config/crd/bases/*.yaml charts/k8s-arr/crds/
+	@echo "CRDs synced to Helm chart."
