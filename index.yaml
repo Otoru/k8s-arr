@@ -1,0 +1,22 @@
+apiVersion: v1
+entries:
+  k8s-arr:
+  - apiVersion: v2
+    appVersion: v0.1.9
+    created: "2025-12-29T03:39:30.837601185Z"
+    description: A Helm chart for the k8s-arr Torrent Operator
+    digest: 964769808e7b66ba8a3490c0e9b5c59adaa0e6a65cd89b2c224b4d08855937c4
+    keywords:
+    - torrent
+    - operator
+    - kubernetes
+    maintainers:
+    - name: Otoru
+    name: k8s-arr
+    sources:
+    - https://github.com/Otoru/k8s-arr
+    type: application
+    urls:
+    - https://github.com/Otoru/k8s-arr/releases/download/k8s-arr-0.1.9/k8s-arr-0.1.9.tgz
+    version: 0.1.9
+generated: "2025-12-29T03:39:30.837607406Z"
