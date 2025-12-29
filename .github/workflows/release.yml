@@ -58,9 +58,9 @@ jobs:
           fetch-depth: 0
 
       - name: Configure Git
-        run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git fetch origin gh-pages:gh-pages || true
 
       - name: Set up Go
         uses: actions/setup-go@v5
