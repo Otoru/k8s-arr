@@ -1,6 +1,6 @@
 module vitoru.fun/torrents
 
-go 1.24.6
+go 1.23.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.11.0
