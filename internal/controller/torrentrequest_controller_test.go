@@ -95,8 +95,16 @@ var _ = Describe("TorrentRequest Controller", func() {
 			}
 			Expect(k8sClient.Create(ctx, indexer)).To(Succeed())
 
-			// 2.1 Set Indexer to Healthy (since IndexerController is not running)
-			indexer.Status.Healthy = true
+			// 2.1 Set Indexer to Ready
+			indexer.Status.Conditions = []metav1.Condition{
+				{
+					Type:               "Ready",
+					Status:             metav1.ConditionTrue,
+					Reason:             "HealthCheckSucceeded",
+					Message:            "Indexer is healthy",
+					LastTransitionTime: metav1.Now(),
+				},
+			}
 			Expect(k8sClient.Status().Update(ctx, indexer)).To(Succeed())
 
 			// 3. Create the TorrentRequest
