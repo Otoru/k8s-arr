@@ -19,9 +19,7 @@ spec:
       {{- include "k8s-arr.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      aliases:
-        - key: control-plane
-          value: controller-manager
+
       labels:
         control-plane: controller-manager
         {{- include "k8s-arr.selectorLabels" . | nindent 8 }}
