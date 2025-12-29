@@ -59,10 +59,11 @@ type TorrentRequestStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="State",type=string,JSONPath=`.status.state`
-// +kubebuilder:printcolumn:name="Ready",type=string,JSONPath=`.status.conditions[?(@.type=="Ready")].status`
-// +kubebuilder:printcolumn:name="Torrent",type=string,JSONPath=`.status.foundTorrent`
-// +kubebuilder:printcolumn:name="Results",type=integer,JSONPath=`.status.resultsFound`
+// +kubebuilder:printcolumn:name="State",type="string",JSONPath=".status.state"
+// +kubebuilder:printcolumn:name="Ready",type="string",JSONPath=".status.conditions[?(@.type==\"Ready\")].status"
+// +kubebuilder:printcolumn:name="Torrent",type="string",JSONPath=".status.foundTorrent"
+// +kubebuilder:printcolumn:name="Results",type="integer",JSONPath=".status.resultsFound"
+// +kubebuilder:resource:shortName=tr
 
 // TorrentRequest is the Schema for the torrentrequests API
 type TorrentRequest struct {

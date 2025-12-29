@@ -11,6 +11,8 @@ spec:
     kind: TorrentRequest
     listKind: TorrentRequestList
     plural: torrentrequests
+    shortNames:
+    - tr
     singular: torrentrequest
   scope: Namespaced
   versions:

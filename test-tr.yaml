@@ -1,0 +1,9 @@
+apiVersion: torrents.vitoru.fun/v1alpha1
+kind: TorrentRequest
+metadata:
+  name: test-flaresolverr-req
+  namespace: default
+spec:
+  keywords: "ubuntu"
+  indexers:
+    - extratorrent-st

@@ -112,11 +112,59 @@ func (r *TorrentRequestReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		torrentSearchesTotal.WithLabelValues(indexer.Name, status).Inc()
 
 		l.Info("Found results", "indexer", indexer.Name, "count", len(results))
-		// Enrich results with indexer name
+
+		// Resolve Magnet links that are actually Detail pages
 		for i := range results {
 			// Quick fix to ensure indexer name is populated if parser didn't do it
 			if results[i].Indexer == "" {
 				results[i].Indexer = indexer.Name
+			}
+
+			// If Magnet is a URL (not magnet:), and we have a Download block, attempt to fetch details
+			if strings.HasPrefix(results[i].Magnet, "http") && !strings.HasPrefix(results[i].Magnet, "magnet:") && indexer.Spec.Download != nil {
+				l.Info("Fetching details page for magnet", "url", results[i].Magnet)
+
+				var detBody []byte
+				var detErr error
+
+				// Reuse FlareSolverr logic if enabled for this indexer
+				useFS := false
+				if r.FlareSolverrURL != "" {
+					for _, setting := range indexer.Spec.Settings {
+						if setting.Type == "info_flaresolverr" {
+							useFS = true
+							break
+						}
+					}
+				}
+
+				if useFS {
+					detBody, detErr = r.doRequestFS(ctx, results[i].Magnet)
+				} else {
+					req, _ := http.NewRequestWithContext(ctx, "GET", results[i].Magnet, nil)
+					req.Header.Set("User-Agent", "Prowlarr/1.0 (Text-Mode-Operator)")
+					resp, er := r.HTTPClient.Do(req)
+					if er != nil {
+						detErr = er
+					} else {
+						defer resp.Body.Close()
+						detBody, detErr = io.ReadAll(resp.Body)
+					}
+				}
+
+				if detErr != nil {
+					l.Error(detErr, "Failed to fetch details page", "url", results[i].Magnet)
+					continue
+				}
+
+				// Parse details
+				magnetLink, parseErr := parser.ParseDetailsPage(string(detBody), indexer.Spec.Download)
+				if parseErr == nil && magnetLink != "" {
+					l.Info("Successfully resolved magnet from details", "magnet", magnetLink)
+					results[i].Magnet = magnetLink
+				} else {
+					l.Error(parseErr, "Failed to parse magnet from details page")
+				}
 			}
 		}
 		allResults = append(allResults, results...)

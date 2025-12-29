@@ -104,3 +104,30 @@ func ParseHTML(htmlContent string, indexer *v1alpha1.Indexer) ([]ParseResult, er
 
 	return results, nil
 }
+
+// ParseDetailsPage parses the details page HTML to find the magnet link
+func ParseDetailsPage(htmlContent string, downloadBlock *v1alpha1.DownloadBlock) (string, error) {
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlContent))
+	if err != nil {
+		return "", fmt.Errorf("failed to load HTML: %v", err)
+	}
+
+	for _, selBlock := range downloadBlock.Selectors {
+		sel := selBlock.Selector
+		attr := "href"
+		if selBlock.Attribute != "" {
+			attr = selBlock.Attribute
+		}
+
+		// Try selector
+		s := doc.Find(sel)
+		if s.Length() > 0 {
+			val, exists := s.Attr(attr)
+			if exists && val != "" {
+				return val, nil
+			}
+		}
+	}
+
+	return "", fmt.Errorf("magnet link not found in details page")
+}
