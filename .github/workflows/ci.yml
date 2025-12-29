@@ -24,3 +24,5 @@ jobs:
           context: .
           push: false
           tags: ghcr.io/otoru/k8s-arr:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
