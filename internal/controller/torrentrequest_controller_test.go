@@ -38,14 +38,14 @@ var _ = Describe("TorrentRequest Controller", func() {
 			ctx := context.Background()
 
 			// 1. Setup Mock Indexer Response
-			server.AppendHandlers(
-				func(w http.ResponseWriter, req *http.Request) {
-					defer GinkgoRecover()
-					Expect(req.Method).To(Equal("GET"))
-					Expect(req.URL.Path).To(Equal("/search"))
-					Expect(req.URL.Query().Get("q")).To(Equal("ubuntu"))
-					w.WriteHeader(http.StatusOK)
-					w.Write([]byte(`
+			// 1. Setup Mock Indexer Response (Repeat to handle potential retries/reconciles)
+			handler := func(w http.ResponseWriter, req *http.Request) {
+				defer GinkgoRecover()
+				Expect(req.Method).To(Equal("GET"))
+				Expect(req.URL.Path).To(Equal("/search"))
+				Expect(req.URL.Query().Get("q")).To(Equal("ubuntu"))
+				w.WriteHeader(http.StatusOK)
+				w.Write([]byte(`
 						<html>
 							<table>
 								<tr class="result">
@@ -58,8 +58,11 @@ var _ = Describe("TorrentRequest Controller", func() {
 							</table>
 						</html>
 					`))
-				},
-			)
+			}
+			// Append the same handler multiple times to allow for controller retries (Conflict/Optimistic Locking)
+			for i := 0; i < 5; i++ {
+				server.AppendHandlers(handler)
+			}
 
 			// 2. Create the Indexer CR pointing to our mock server
 			indexer := &torrentsv1alpha1.Indexer{

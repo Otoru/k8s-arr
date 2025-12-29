@@ -28,3 +28,4 @@ go.work
 
 # Kubeconfig might contain secrets
 *.kubeconfig
+charts/k8s-arr/crds/*.yaml
