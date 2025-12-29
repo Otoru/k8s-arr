@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/component: manager
     app.kubernetes.io/created-by: k8s-arr
     app.kubernetes.io/part-of: k8s-arr
-    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
     {{- include "k8s-arr.labels" . | nindent 4 }}
 spec:
   replicas: 1
